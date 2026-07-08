@@ -1,4 +1,4 @@
-import { jsonResponse, listOfficesByLocation } from "../lib/wam-core.mjs";
+import { jsonResponse, listOfficesByLocation } from "../lib/wam-public-data.mjs";
 
 export async function handler(event) {
   if (event.httpMethod !== "GET") {

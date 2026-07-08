@@ -1,4 +1,5 @@
-import { analyzeFinancialZip, downloadLatestFinancials, jsonResponse } from "../lib/wam-core.mjs";
+import { downloadLatestFinancials, jsonResponse } from "../lib/wam-public-data.mjs";
+import { analyzeFinancialZip } from "../lib/wam-core.mjs";
 
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
