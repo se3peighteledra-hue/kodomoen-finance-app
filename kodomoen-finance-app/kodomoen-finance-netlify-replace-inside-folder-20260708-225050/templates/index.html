@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="WAM NETの公開財務資料から、こども園等の財務状況をやさしく確認するアプリです。">
+  <title>こども園 財務みえる化</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v='4') }}">
+</head>
+<body
+  data-contact-email="{{ contact.email }}"
+  data-contact-form-url="{{ contact.form_url }}"
+>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="トップへ">
+      <span class="brand-mark" aria-hidden="true">み</span>
+      <span>こども園 財務みえる化</span>
+    </a>
+    <span class="source-chip">WAM NET 公開情報から取得</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">都道府県 → 市町村 → 園名を選ぶだけ</p>
+      <h1>働いている園の財務状況を<br><span>やさしく確認できます</span></h1>
+      <p class="hero-copy">
+        WAM NETで公開されている社会福祉法人の計算書類をもとに、園・拠点区分または運営法人全体の数字を読み取り、5段階のやさしい診断と改善のヒントを表示します。
+      </p>
+
+      <form id="selection-form" class="search-panel">
+        <div class="search-panel-head">
+          <span class="big-step">1</span>
+          <div>
+            <h2>園を選んでください</h2>
+            <p>まず都道府県と市町村を選ぶと、候補の園名が表示されます。</p>
+          </div>
+        </div>
+
+        <div class="selector-grid">
+          <label class="search-field" for="prefecture">
+            <span>① 都道府県</span>
+            <select id="prefecture" required>
+              <option value="">読み込み中...</option>
+            </select>
+          </label>
+
+          <label class="search-field" for="municipality">
+            <span>② 市町村</span>
+            <select id="municipality" required disabled>
+              <option value="">先に都道府県を選択</option>
+            </select>
+          </label>
+
+          <label class="search-field" for="office-keyword">
+            <span>園名で絞り込み（任意）</span>
+            <div class="inline-control">
+              <input id="office-keyword" type="search" autocomplete="off" placeholder="例：武蔵ヶ丘">
+              <button id="refresh-offices" type="button">候補を更新</button>
+            </div>
+          </label>
+
+          <label class="search-field office-select-field" for="office-select">
+            <span>③ 園名</span>
+            <select id="office-select" required disabled>
+              <option value="">市町村を選ぶと表示されます</option>
+            </select>
+          </label>
+
+          <button id="analyze-button" class="primary-button" type="submit" disabled>
+            <span>この園の財務状況を見る</span><span aria-hidden="true">→</span>
+          </button>
+        </div>
+        <p class="field-note">
+          候補が多い場合は「園名で絞り込み」に名前の一部を入れてください。表示される財務資料はWAM NETの公開資料を読み取った簡易確認用です。
+        </p>
+      </form>
+    </section>
+
+    <section id="notice" class="notice hidden" role="status" aria-live="polite"></section>
+
+    <section id="loading-section" class="loading-card hidden" aria-live="polite">
+      <div class="loader" aria-hidden="true"></div>
+      <div>
+        <h2>WAM NETの資料を確認しています</h2>
+        <p>最新の計算書類ZIPを取得し、事業活動計算書・貸借対照表・資金収支計算書を読み取っています。</p>
+      </div>
+    </section>
+
+    <section id="analysis-section" class="content-section hidden" aria-labelledby="analysis-title">
+      <div class="report-top">
+        <div>
+          <p class="section-kicker">STEP 2・結果</p>
+          <h2 id="analysis-title"></h2>
+          <p id="analysis-meta" class="report-meta"></p>
+        </div>
+        <div id="year-badge" class="year-badge"></div>
+      </div>
+
+      <div id="summary-card" class="summary-card">
+        <div class="summary-icon" aria-hidden="true"></div>
+        <div>
+          <div class="summary-row">
+            <div id="scope-badge" class="scope-badge"></div>
+            <div id="diagnosis-stars" class="diagnosis-stars"></div>
+          </div>
+          <h3 id="headline"></h3>
+          <p id="summary"></p>
+          <p id="scope-note" class="scope-note"></p>
+        </div>
+      </div>
+
+      <div id="metric-grid" class="metric-grid"></div>
+
+      <section class="strategy-card" aria-labelledby="strategy-title">
+        <p class="section-kicker">改善のヒント</p>
+        <h3 id="strategy-title">一般的に取り組みやすい戦略</h3>
+        <div id="strategy-list" class="strategy-list"></div>
+        <p class="strategy-note">ここでは公開資料だけから見える一般的な方向性を示しています。実際の改善可否は園の事情や年度計画によって変わります。</p>
+      </section>
+
+      <section class="contact-card" aria-labelledby="contact-title">
+        <div>
+          <p class="section-kicker">もう少し詳しく見たい方へ</p>
+          <h3 id="contact-title">相談・問い合わせにつなげる</h3>
+          <p>詳しい確認や個別相談は、InstagramのDM、または問い合わせフォームからご連絡ください。</p>
+          <a class="instagram-link" href="{{ contact.instagram }}" target="_blank" rel="noopener">Instagram：@rx8_real_estate_leasing</a>
+        </div>
+        <form
+          name="contact"
+          method="POST"
+          action="/success.html"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="contact-form"
+        >
+          <input type="hidden" name="form-name" value="contact">
+          <input type="hidden" id="form-office-name" name="office_name">
+          <input type="hidden" id="form-corporation-name" name="corporation_name">
+          <input type="hidden" id="form-address" name="address">
+          <input type="hidden" id="form-year" name="year">
+          <input type="hidden" id="form-diagnosis" name="diagnosis">
+          <p class="hidden">
+            <label>Bot field <input name="bot-field"></label>
+          </p>
+          <label>
+            お名前
+            <input name="name" autocomplete="name" placeholder="お名前">
+          </label>
+          <label>
+            返信先メール
+            <input name="email" type="email" autocomplete="email" placeholder="example@example.com">
+          </label>
+          <label>
+            相談内容
+            <textarea name="message" rows="4" required placeholder="例：この園の数字の見方をもう少し詳しく知りたいです。"></textarea>
+          </label>
+          <button class="contact-submit" type="submit">問い合わせフォームで送る</button>
+          <p class="contact-empty">送信内容はNetlify Formsに集計されます。Netlify管理画面から確認できます。</p>
+        </form>
+      </section>
+
+      <details class="amount-details">
+        <summary>読み取った主な金額を見る</summary>
+        <div id="amount-grid" class="amount-grid"></div>
+      </details>
+
+      <div class="explanation">
+        <h3>結果の読み方</h3>
+        <p>
+          この診断は、公開資料から読み取れる主要指標をもとにした簡易確認です。単年度だけで園の良し悪しや雇用の安定性を断定するものではありません。数年の推移、定員、補助金、修繕などの事情も合わせて見ることが大切です。
+        </p>
+        <a id="source-link" href="#" target="_blank" rel="noopener">WAM NETの法人詳細ページを確認する →</a>
+      </div>
+    </section>
+
+    <section class="about-grid">
+      <article>
+        <span>01</span>
+        <h2>公開情報だけを使用</h2>
+        <p>社会福祉法人が届け出た公開計算書類を参照します。個人情報や園内資料は使用しません。</p>
+      </article>
+      <article>
+        <span>02</span>
+        <h2>選択式で迷いにくく</h2>
+        <p>都道府県、市町村、園名の順に選ぶだけで、該当するWAM資料を探します。</p>
+      </article>
+      <article>
+        <span>03</span>
+        <h2>やさしい言葉で説明</h2>
+        <p>不安をあおる表現を避け、5段階の目安と改善のヒントを表示します。</p>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>出典：<a href="https://www.wam.go.jp/wamnet/zaihyoukaiji/pub/PUB0200000E00.do" target="_blank" rel="noopener">社会福祉法人の財務諸表等電子開示システム</a>をもとに本アプリが編集・加工</p>
+    <p>本アプリは簡易確認用です。会計・投資・就職判断の専門的助言ではありません。</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js', v='4') }}" defer></script>
+</body>
+</html>

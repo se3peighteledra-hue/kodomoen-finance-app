@@ -1,0 +1,67 @@
+【Netlifyに公開するいちばん簡単な手順】
+
+このアプリは「Netlify + Netlify Functions + Netlify Forms」で公開します。
+WAM NETから財務情報を取る処理があるので、Netlifyのドラッグ＆ドロップだけではなく、GitHub連携で公開するのがおすすめです。
+
+
+1. GitHubで新しいリポジトリを作る
+
+GitHubにログインして「New repository」を押します。
+名前は例として「kodomoen-finance-app」でOKです。
+
+
+2. このフォルダの中身をGitHubにアップロードする
+
+アップロードするのは、このZIPを展開した中にある「kodomoen-finance-app」フォルダの中身です。
+
+重要：
+「kodomoen-finance-app」フォルダそのものではなく、その中身をアップロードすると後が簡単です。
+
+
+3. NetlifyでGitHubリポジトリを選ぶ
+
+Netlifyにログインします。
+
+Add new site
+→ Import an existing project
+→ GitHub
+→ 作ったリポジトリを選ぶ
+
+
+4. Netlifyの設定
+
+Build command:
+npm run build
+
+Publish directory:
+netlify-site
+
+Functions directory:
+netlify/functions
+
+Base directory:
+空欄でOK
+
+※ もしGitHub上で「kodomoen-finance-app」フォルダの中にファイルが入っている形にした場合は、
+Base directory に下記を入れてください。
+
+kodomoen-finance-app
+
+
+5. Deployを押す
+
+公開が終わると、NetlifyがURLを出します。
+例：
+https://xxxxx.netlify.app
+
+これが公開URLです。
+
+
+6. 問い合わせフォームを見る
+
+Netlify管理画面の「Forms」を開くと、問い合わせ内容が集計されます。
+フォーム名は contact です。
+
+
+Instagramリンクは下記に設定済みです。
+https://www.instagram.com/rx8_real_estate_leasing/

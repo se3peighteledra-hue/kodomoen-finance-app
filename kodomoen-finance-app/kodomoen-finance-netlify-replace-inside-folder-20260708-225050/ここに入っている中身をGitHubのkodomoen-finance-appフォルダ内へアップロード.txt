@@ -1,0 +1,1 @@
+﻿このZIPは、GitHubの kodomoen-finance-app フォルダの中で上書きアップロードする用です。ZIPを展開して、このフォルダの中身を全部選択し、GitHubの kodomoen-finance-app フォルダ内にドラッグしてください。kodomoen-finance-app というフォルダをさらに作らないでください。

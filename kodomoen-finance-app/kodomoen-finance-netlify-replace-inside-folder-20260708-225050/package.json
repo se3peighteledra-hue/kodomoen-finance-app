@@ -1,0 +1,16 @@
+{
+  "name": "kodomoen-finance-netlify",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-netlify-site.mjs",
+    "check": "node --check netlify/functions/offices.mjs && node --check netlify/functions/analyze.mjs && node --check netlify/lib/wam-core.mjs && node --check netlify/lib/wam-public-data.mjs && node --check scripts/build-netlify-site.mjs && node --check static/app.js"
+  },
+  "dependencies": {
+    "@netlify/functions": "^3.0.0",
+    "cheerio": "^1.0.0",
+    "jszip": "^3.10.1",
+    "pdfjs-dist": "^5.4.54"
+  }
+}
